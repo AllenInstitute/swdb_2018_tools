@@ -1,2 +1,7 @@
 hello!
+<<<<<<< HEAD
 Gabriel's change...
+=======
+
+hello again!
+>>>>>>> master
