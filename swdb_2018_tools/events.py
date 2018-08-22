@@ -3,8 +3,6 @@ import os
 
 AWS_EVENTS_PATH = '/data/dynamic-brain-workshop/visual_coding_2p_events'
 
-os.listdir('/paththatdoesntexit')
-
 def get_events(eid, path=AWS_EVENTS_PATH):
     """
         params:
