@@ -6,10 +6,10 @@ AWS_EVENTS_PATH = '/data/dynamic-brain-workshop/visual_coding_2p_events'
 def get_events(eid, path=AWS_EVENTS_PATH):
     """
         params:
-            eid:  The experiment id (integer) for the experimental session
-            path:  Path to the visual_coding_2p_events folder, default is the AWS path
+            eid (int):  The experiment id for the experimental session
+            path (str):  Path to the visual_coding_2p_events folder, default is the AWS path
         returns:
-            events:  array of shape (number of neurons, acquisition frames) containing L0 extracted event magnitudes
+            events (ndarray):  array of shape (number of neurons, acquisition frames) containing L0 extracted event magnitudes
     """
 
     try:
