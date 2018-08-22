@@ -20,6 +20,6 @@ def get_events(eid, path=AWS_EVENTS_PATH):
 
     filename = [f for f in files if f[:9] == str(eid)][0]
 
-    events = np.load(filename)
+    events = np.load(os.path.join(path,filename))
 
     return events['ev']
