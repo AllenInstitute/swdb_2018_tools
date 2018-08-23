@@ -5,8 +5,7 @@ Created on Wed Aug 22 14:38:40 2018
 
 @author: saskiad
 """
-import pandas as pd
-from swdb_2018_neuropixels.ephys_nwb_adapter import NWB_adapter
+import numpy as np
 
 def get_all_spike_times(data_set):
     '''Adds unit spike times to the unit_df dataframe
