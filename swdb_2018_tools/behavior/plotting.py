@@ -2,7 +2,7 @@ from visual_behavior.visualization.extended_trials import daily
 
 def plot_session_summary(dataset):
 
-    mouse_id = dataset.metadata['donor_id'].values[0]
+    mouse_id = "M{}".format(dataset.metadata['donor_id'].values[0])
 
     fig = daily.make_daily_figure(
         dataset.all_trials,
