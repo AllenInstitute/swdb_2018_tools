@@ -5,11 +5,12 @@
 # t_final: time to stop counting spikes
 # probes: list of strings of probe names to be used (default is all probes)
 # regions: list of strings of brain regions to be used (default is all regions)
-
-# Outputs: tuple of
-# binned_spikes: binned_spikes[i,j] is the number of spikes from neuron i in time bin j,
-# cell_table: the subset of data_set.unit_df for the relevant neurons
-def bin_spikes(data_set,bin_len,t_start,t_final,probes=data_set.probe_list,regions=data_set.unit_df.structure.unique()):
+def bin_spikes(data_set,bin_len,t_start,t_final,probes=None,regions=None):
+    if probes is None:
+        probes = data_set.probe_list
+    if regions is None:
+        regions = data_set.unit_df.structure.unique()
+    
     #gather cells from desired regions and probes into cell_table
     use_cells = False
     for probe in probes:
@@ -25,12 +26,8 @@ def bin_spikes(data_set,bin_len,t_start,t_final,probes=data_set.probe_list,regio
     i = 0
     for z,cell in cell_table.iterrows(): 
         for spike_time in data_set.spike_times[cell['probe']][cell['unit_id']]:
-            t = int(np.floor(spike_time/bin_len))
+            t = int(np.floor((spike_time-t_start)/bin_len))
             if (t >=0) & (t<T):
                 binned_spikes[i,t] += 1
         i+=1    
     return (binned_spikes, cell_table)
-
-    
-
-
