@@ -74,11 +74,14 @@ def get_fr(spike_times, num_timestep_second=20, filter_width=0.5):
     Returns
     -------
     firing rate (array)
+    timestamps (array)
 
     '''
+    timesteps = 1./num_timestep_second
     spikes = spike_times.astype(float)
     spike_train = np.zeros((int((spikes[-1]+0.2)*num_timestep_second)))
     spike_train[(spikes*num_timestep_second).astype(int)]=1
     filter_width = int(filter_width*num_timestep_second)
     fr = ndi.gaussian_filter(spike_train, filter_width)
-    return fr
+    timestamps = np.linspace(0,len(fr)/num_timestep_second, num=len(fr))
+    return fr, timestamps
