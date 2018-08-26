@@ -7,6 +7,7 @@ Created on Wed Aug 22 14:38:40 2018
 """
 import numpy as np
 import pandas as pd
+import scipy.ndimage as ndi
 
 def get_all_spike_times(data_set):
     '''Adds unit spike times to the unit_df dataframe
@@ -59,3 +60,25 @@ def one_spike_dataframe_to_rule_them_all(data_set):
     )
 
     return spikes
+
+def get_fr(spike_times, num_timestep_second=20, filter_width=0.5):
+    '''Filters spike times to create instantaneous firing rate
+
+    Parameters
+    ----------
+    spike times: for one unit (np array)
+    num_timestep_second : number of "bins" per second (int)
+    filter width : st. dev of the gaussian filter in seconds (float)
+
+
+    Returns
+    -------
+    firing rate (array)
+
+    '''
+    spikes = spike_times.astype(float)
+    spike_train = np.zeros((int((spikes[-1]+0.2)*num_timestep_second)))
+    spike_train[(spikes*num_timestep_second).astype(int)]=1
+    filter_width = int(filter_width*num_timestep_second)
+    fr = ndi.gaussian_filter(spike_train, filter_width)
+    return fr
