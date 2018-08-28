@@ -18,3 +18,6 @@ def get_time_of_final_stimulus(data_set):
         all_stim_end_times.append(np.max(v.end.values))
     
     return np.max(all_stim_end_times)
+
+
+
