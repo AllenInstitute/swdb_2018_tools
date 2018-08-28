@@ -12,30 +12,21 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def get_stimulus_blocks(data_set):
+def get_stimulus_blocks(data_set, block_threshold=100):
     '''Return dataframe with start and end times for each stimulus block '''
     stim_blocks = []
     for i,k in enumerate(data_set.stim_tables.keys()):
-
         stim_table = data_set.stim_tables[k]
         s = stim_table.start.values
         s_end = stim_table.end.values
-        idx = np.where(np.diff(s)>100)[0]
 
-        if len(idx)==0:
-            stim_blocks.append((k,s[0],s_end[-1]))
+        idx = np.where(np.diff(s)>block_threshold)[0] + 1
+        full_idx = np.sort(np.unique(np.concatenate([idx, [0, len(s)]])))
 
-        elif len(idx)==1:
-            stim_blocks.append((k,s[0],s_end[idx[0]-1]))
-            stim_blocks.append((k,s[idx[0]+1],s_end[-1]))
-
-        elif len(idx)==2:
-            stim_blocks.append((k,s[0],s_end[idx[0]-1]))
-            stim_blocks.append((k,s[idx[0]+1],s_end[idx[1]-1]))    
-            stim_blocks.append((k,s[idx[1]+1],s_end[-1]))  
-    
-    stim_blocks = pd.DataFrame(stim_blocks,columns=['stimulus_type','start','end'])
+        for low, high in zip(full_idx[:-1], full_idx[1:]):
+            stim_blocks.append((k, s[low], s_end[high-1]))
             
+    stim_blocks = pd.DataFrame(stim_blocks,columns=['stimulus_type','start','end'])
     return stim_blocks
 
 def plot_stimulus_blocks(data_set,ax=[]):
